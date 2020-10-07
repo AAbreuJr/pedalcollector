@@ -1,25 +1,19 @@
 from django.shortcuts import render
-from django.http import HttpResponse
+from .models import Pedal
 
-class Pedal:
-    def __init__ (self, name, company, type, stereo):
-        self.name = name
-        self.company = company
-        self.type = type
-        self.stereo = stereo
 
-pedals = [
-    Pedal('Bloom', 'Jackson Audio', 'Compressor', 'no'),
-    Pedal('POG 2', 'Electro Harmonix', 'Octave', 'no'),
-    Pedal('Superbolt', 'JHS Audio',  'Overdrive', 'no')
-]
 
 # Create your views here.
 def home(request):
-    return HttpResponse('<h1>We Love Pedals</h1>')
+    return render(request, 'home.html')
 
 def about(request):
     return render(request, 'about.html')
 
 def pedals_index(request):
-    return render(request, 'pedals/index.html', { 'pedals': pedals })
+    pedals = Pedal.objects.all()
+    return render(request, 'pedals/index.html', { 'pedals': pedals}) #how we will pass data into it
+
+def pedals_detail(request, pedal_id):
+    pedal = Pedal.objects.get(id=pedal_id)
+    return render(request, 'pedals/detail.html', { 'pedal': pedal })
