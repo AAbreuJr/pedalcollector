@@ -1,5 +1,6 @@
 from django.shortcuts import render
-from .models import Pedal
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from .models import Pedalboard
 
 
 
@@ -10,10 +11,22 @@ def home(request):
 def about(request):
     return render(request, 'about.html')
 
-def pedals_index(request):
-    pedals = Pedal.objects.all()
-    return render(request, 'pedals/index.html', { 'pedals': pedals}) #how we will pass data into it
+def pedalboards_index(request):
+    pedalboards = Pedalboard.objects.all()
+    return render(request, 'pedalboards/index.html', { 'pedalboards': pedalboards}) #how we will pass data into it
 
-def pedals_detail(request, pedal_id):
-    pedal = Pedal.objects.get(id=pedal_id)
-    return render(request, 'pedals/detail.html', { 'pedal': pedal })
+def pedalboards_detail(request, pedalboard_id):
+    pedalboard = Pedalboard.objects.get(id=pedalboard_id)
+    return render(request, 'pedalboards/detail.html', { 'pedalboard': pedalboard })
+
+class PedalboardCreate(CreateView):
+    model = Pedalboard
+    fields = '__all__'
+
+class PedalboardUpdate(UpdateView):
+    model = Pedalboard
+    fields = '__all__'
+
+class PedalboardDelete(DeleteView):
+    model = Pedalboard
+    success_url = '/pedalboards/'

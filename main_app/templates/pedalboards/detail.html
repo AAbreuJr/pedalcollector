@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h1>Pedalboard Details</h1>
+
+<div class="card">
+  <div class="card-content">
+    <span class="card-title">{{ pedalboard.name }}</span>
+    <p>Company: {{ pedalboard.company }}</p>
+    <p>Size: {{ pedalboard.size }}</p>
+    <p>Color: {{ pedalboard.color }}</p>
+    </div>
+    <div class="card-action">
+      <a href="{% url 'pedalboards_update' pedalboard.id %}">Edit</a>
+      <a href="{% url 'pedalboards_delete' pedalboard.id %}">Delete</a>
+    </div>
+</div>
+
+{% endblock %}

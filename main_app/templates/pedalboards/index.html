@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h1>Pedalboard List</h1>
+
+{% for pedalboard in pedalboards %}
+  <div class="card">
+    <a href="{% url 'detail' pedalboard.id %}">
+    <div class="card-content">
+      <span class="card-title">{{ pedalboard.name }}</span>
+      <p>Company: {{ pedalboard.company }}</p>
+      <p>Size: {{ pedalboard.size }} </p>
+      <p>Color: {{ pedalboard.color }} </p>
+    </div>
+  </div>
+{% endfor %}
+
+{% endblock %}
