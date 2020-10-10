@@ -3,17 +3,71 @@
 
 <h1>Pedalboard Details</h1>
 
-<div class="card">
-  <div class="card-content">
-    <span class="card-title">{{ pedalboard.name }}</span>
-    <p>Company: {{ pedalboard.company }}</p>
-    <p>Size: {{ pedalboard.size }}</p>
-    <p>Color: {{ pedalboard.color }}</p>
+<div class="row">
+  <div class="col s6">
+    <div class="card">
+      <div class="card-content">
+        <span class="card-title">{{ pedalboard.name }}</span>
+        <p>Company: {{ pedalboard.company }}</p>
+        <p>Size: {{ pedalboard.size }}</p>
+        <p>Color: {{ pedalboard.color }}</p>
+      </div>
+      <div class="card-action">
+        <a href="{% url 'pedalboards_update' pedalboard.id %}">Edit</a>
+        <a href="{% url 'pedalboards_delete' pedalboard.id %}">Delete</a>
+      </div>
     </div>
-    <div class="card-action">
-      <a href="{% url 'pedalboards_update' pedalboard.id %}">Edit</a>
-      <a href="{% url 'pedalboards_delete' pedalboard.id %}">Delete</a>
+    <!-- Insert photo markup below this comment -->
+  </div>
+
+  <hr>
+  <div class="row">
+    <div class="col s6">
+      <h3>{{ pedalboard.name }}'s Pedals</h3>
+      {% if pedalboard.pedals.count %}
+        {% for pedal in pedalboard.pedals.all %}
+          <div class="card">
+            <div class="card-content">
+              <span class="card-title">
+                <span>{{ pedal.company }}</span> {{ pedal.name }}
+              </span>
+            </div>
+            <div class="card-action">
+              <form action="{% url 'unassoc_pedal' pedalboard.id pedal.id %}" method="post">
+                  {% csrf_token %}
+                <button type="submit" class="btn">Remove</button>
+              </form>
+            </div>
+          </div>
+        {% endfor %}
+      {% else %}
+        <h5>No Pedals :(</h5>
+      {% endif %}
     </div>
+
+  <!-- Available pedals will come after this line -->
+  <div class="col s6">
+    <h3>Available Pedals</h3>
+    {% if pedals.count %}
+      {% for pedal in pedals.all %}
+        <div class="card">
+          <div class="card-content">
+            <span class="card-title">
+              <span>{{ pedal.company }}</span>{{pedal.name}}
+            </span>
+          </div>
+          <div class="card-action">
+            <form action="{% url 'assoc_pedal' pedalboard.id pedal.id %}" method="post">
+                {% csrf_token %}
+              <button type="submit" class="btn">Add</button>
+            </form>
+          </div>
+        </div>
+      {% endfor %}
+    {% else %}
+      <h5>{{pedalboard.name}} Already Has All Pedals Available</h5>
+    {% endif %}
+  </div>
 </div>
 
 {% endblock %}
